@@ -76,9 +76,14 @@
       },
       "routes": [
         {
-          "name": "RouteMain",
-          "pattern": "RouteMain",
+          "name": "Main",
+          "pattern": "Main",
           "target": ["TargetMain"]
+        },
+        {
+          "name": "View2",
+          "pattern": "View2",
+          "target": ["View2"]
         }
       ],
       "targets": {
@@ -86,8 +91,15 @@
           "viewType": "XML",
           "transition": "slide",
           "clearControlAggregation": false,
-          "viewId": "Main",
+          "viewId": "idMain",
           "viewName": "Main"
+        },
+        "View2": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "idView2",
+          "viewName": "View2"
         }
       }
     }

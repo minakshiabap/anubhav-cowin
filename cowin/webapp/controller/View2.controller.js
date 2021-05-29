@@ -7,12 +7,12 @@ sap.ui.define([
 	function (Controller) {
 		"use strict";
 
-		return Controller.extend("cowin.cowin.controller.Main", {
+		return Controller.extend("cowin.cowin.controller.View2", {
 			onInit: function () {
-				this.oRouter = this.getOwnerComponent().getRouter();
+                this.oRouter = this.getOwnerComponent().getRouter();
 			},
-			onBtnPress: function() {debugger;
-				this.oRouter.navTo("View2");
+			onBack: function() {debugger;
+				this.oRouter.navTo("Main");
 			}
 		});
 	});

@@ -4,13 +4,14 @@
     displayBlock="true"
     xmlns="sap.m"
 >
-	<Shell id="shell">
-		<App id="app">
-			<pages>
-				<Page id="page" title="{i18n>title}">
-					<content />
-				</Page>
-			</pages>
-		</App>
-	</Shell>
+	<App id="app">
+		<pages>
+			<Page id="page" title="{i18n>title}" titleAlignment="Center">
+				<content>
+					<Button text="To View 2" press="onBtnPress"/>
+				</content>
+			</Page>
+		</pages>
+	</App>
+	
 </mvc:View>
