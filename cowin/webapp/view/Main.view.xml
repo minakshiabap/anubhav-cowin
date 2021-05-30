@@ -1,4 +1,4 @@
-<mvc:View
+<mvc:View xmlns:core="sap.ui.core"
     controllerName="cowin.cowin.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
@@ -8,7 +8,30 @@
 		<pages>
 			<Page id="page" title="{i18n>title}" titleAlignment="Center">
 				<content>
-					<Button text="To View 2" press="onBtnPress"/>
+					<VBox >
+						<HBox justifyContent="Center" alignContent="Center" class="sapUiSmallMarginTop">
+							<RadioButtonGroup select="onRadioBtnSelect">
+								<RadioButton text="Search by Pincode" selected="true" />
+								<RadioButton text="Search by City" />
+							</RadioButtonGroup>
+						</HBox>
+						<HBox id="pinBox" class="sapUiSmallMarginTop" justifyContent="Center" >
+							<Input type="Number" placeholder="Enter Pincode"/>
+							<Button id="pinButton" text="Search" press="onSearch" class="sapUiSmallMarginBegin"/>
+						</HBox>
+						<HBox id="cityBox" visible="false" class="sapUiSmallMarginTop" justifyContent="Center">
+							<Label text="State :" class="sapUiSmallMarginTop" design="Bold"/>
+							<Select id="stateSelect" class="sapUiSmallMarginEnd sapUiTinyMarginBegin" width="150px" items="{local>/states}" forceSelection="false" change="onStateSelect">
+								<core:ListItem text="{local>state_name}" key="{local>state_id}"/>
+							</Select>
+							<Label text="City :" class="sapUiSmallMarginTop" design="Bold"/>
+							<Select id="citySelect" class="sapUiSmallMarginEnd sapUiTinyMarginBegin" width="150px" items="{local>/districts}" forceSelection="false" change="onCitySelect">
+								<core:ListItem text="{local>district_name}" key="{local>/district_id}"/>
+							</Select>
+							<Button id="cityButton" text="Search" press="onSearch"/>
+						</HBox>
+					</VBox>
+					<Button text="Go" press="onBtnPress"/>
 				</content>
 			</Page>
 		</pages>
