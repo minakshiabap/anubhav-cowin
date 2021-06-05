@@ -1,40 +1,89 @@
-<mvc:View xmlns:core="sap.ui.core"
-    controllerName="cowin.cowin.controller.Main"
-    xmlns:mvc="sap.ui.core.mvc"
-    displayBlock="true"
-    xmlns="sap.m"
->
-	<App id="app">
+<mvc:View xmlns:core="sap.ui.core" controllerName="cowin.cowin.controller.Main" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout">
+	<App id="app" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:vbm="sap.ui.vbm">
 		<pages>
 			<Page id="page" title="{i18n>title}" titleAlignment="Center">
 				<content>
-					<VBox >
+					<VBox>
 						<HBox justifyContent="Center" alignContent="Center" class="sapUiSmallMarginTop">
-							<RadioButtonGroup select="onRadioBtnSelect">
-								<RadioButton text="Search by Pincode" selected="true" />
-								<RadioButton text="Search by City" />
-							</RadioButtonGroup>
-						</HBox>
-						<HBox id="pinBox" class="sapUiSmallMarginTop" justifyContent="Center" >
-							<Input type="Number" placeholder="Enter Pincode"/>
-							<Button id="pinButton" text="Search" press="onSearch" class="sapUiSmallMarginBegin"/>
+							<VBox>
+								<RadioButtonGroup select="onRadioBtnSelect" columns="2">
+									<RadioButton text="Search by Pincode" selected="true" />
+									<RadioButton text="Search by City" />
+								</RadioButtonGroup>
+								<DatePicker id="idSelectedDate" displayFormat="dd-MM-YYYY" dateValue="{local>/dateValue}" valueFormat="dd-MM-YYYY" />
+								<HBox id="pinBox" class="sapUiSmallMarginTop" justifyContent="Start">
+									<Input id="pinCode" type="Number" placeholder="Enter Pincode" width="222px" liveChange="onPinChange" maxLength="6" />
+									<Button id="pinButton" text="Search" press="onSearch" class="sapUiSmallMarginBegin" />
+								</HBox>
+							</VBox>
 						</HBox>
 						<HBox id="cityBox" visible="false" class="sapUiSmallMarginTop" justifyContent="Center">
-							<Label text="State :" class="sapUiSmallMarginTop" design="Bold"/>
+							<Label text="State :" class="sapUiSmallMarginTop" design="Bold" />
 							<Select id="stateSelect" class="sapUiSmallMarginEnd sapUiTinyMarginBegin" width="150px" items="{local>/states}" forceSelection="false" change="onStateSelect">
-								<core:ListItem text="{local>state_name}" key="{local>state_id}"/>
+								<core:ListItem text="{local>state_name}" key="{local>state_id}" />
 							</Select>
-							<Label text="City :" class="sapUiSmallMarginTop" design="Bold"/>
+							<Label text="City :" class="sapUiSmallMarginTop" design="Bold" />
 							<Select id="citySelect" class="sapUiSmallMarginEnd sapUiTinyMarginBegin" width="150px" items="{local>/districts}" forceSelection="false" change="onCitySelect">
-								<core:ListItem text="{local>district_name}" key="{local>/district_id}"/>
+								<core:ListItem text="{local>district_name}" key="{local>district_id}" />
 							</Select>
-							<Button id="cityButton" text="Search" press="onSearch"/>
+							<Button id="cityButton" text="Search" press="onSearch" />
 						</HBox>
+
 					</VBox>
-					<Button text="Go" press="onBtnPress"/>
+					<Toolbar>
+						<ToolbarSpacer />
+						<Button id="dashboardBtn" text="See more Detail" enabled="false" press="onBtnPress" />
+					</Toolbar>
+					<HBox>
+						
+						<form:SimpleForm>
+							<form:content>
+								<Label text="State" />
+								<Text text="{local>/formData/state_name}" />
+
+								<Label text="City" />
+								<Text text="{local>/formData/city_name}" />
+
+								<Label text="Total Centers" />
+								<Text text="{local>/formData/total_center}" />
+
+								<Label text="Vaccination Timing" />
+								<Text text="{local>/formData/timing}" />
+							</form:content>
+						</form:SimpleForm>
+					
+					</HBox>
+					<HBox>
+						<vbm:GeoMap id="vbi" width="100%" xmlns:l="sap.ui.layout" height="100%"/>
+					</HBox>
 				</content>
+				<footer>
+					<OverflowToolbar height="110px" >
+						<layout:HorizontalLayout >
+							<TileContent footer="Total Vaccination"  class="sapUiLargeMarginEnd" footerColor="Good">
+								<NumericContent id="icon1" icon="https://cdn1.iconfinder.com/data/icons/modern-set-of-digital-symbols/48/configuration_dashboard-512.png" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/total_doses', formatter: '.getCountMillion'}"/>
+							</TileContent>
+							<TileContent footer="Dose 1 Vaccination"  class="sapUiLargeMarginEnd sapUiLargeMarginBegin" footerColor="Good" >
+								<NumericContent id="icon2" icon="https://image.flaticon.com/icons/png/512/101/101960.png" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/tot_dose_1', formatter: '.getCountMillion'}"/>
+							</TileContent>
+							<TileContent footer="Dose 2 Vaccination"  class="sapUiLargeMarginEnd sapUiLargeMarginBegin" footerColor="Good" >
+								<NumericContent id="icon3" icon="https://image.flaticon.com/icons/png/128/2966/2966456.png" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/tot_dose_2', formatter: '.getCountMillion'}"/>
+							</TileContent>
+							<TileContent footer="Tot-Vaccinated Male"  class="sapUiLargeMarginEnd sapUiLargeMarginBegin" footerColor="Good" >
+								<NumericContent id="icon4" icon="https://image.flaticon.com/icons/png/512/0/126.png" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/male', formatter: '.getCountMillion'}" />
+							</TileContent>
+							<TileContent footer="Tot-Vaccinated Female"  class="sapUiLargeMarginEnd sapUiLargeMarginBegin" footerColor="Good">
+								<NumericContent id="icon5" icon="https://icon-library.com/images/person-icon-png-transparent/person-icon-png-transparent-17.jpg" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/female', formatter: '.getCountMillion'}" />
+							</TileContent>
+							<TileContent footer="After Effect Reported" class="sapUiSmallMarginEnd" footerColor="Good">
+								<NumericContent id="icon6" icon="https://www.shareicon.net/data/2015/11/27/678427_people_512x512.png" scale="K+" value="{path: 'local>/allIndia/topBlock/vaccination/aefi', formatter: '.getCountThousand'}"/>
+							</TileContent>							
+						</layout:HorizontalLayout>
+					</OverflowToolbar>
+				</footer>
+				
 			</Page>
 		</pages>
 	</App>
-	
+
 </mvc:View>

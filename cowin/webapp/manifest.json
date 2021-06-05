@@ -34,7 +34,6 @@
     "rootView": {
       "viewName": "cowin.cowin.view.Main",
       "type": "XML",
-      "async": true,
       "id": "Main"
     },
     "dependencies": {
@@ -80,12 +79,12 @@
       "routes": [
         {
           "name": "Main",
-          "pattern": "Main",
+          "pattern": "",
           "target": ["TargetMain"]
         },
         {
           "name": "View2",
-          "pattern": "View2",
+          "pattern": "View2/{distict_Id}&{date}",
           "target": ["View2"]
         }
       ],

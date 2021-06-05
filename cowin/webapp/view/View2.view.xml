@@ -3,10 +3,136 @@
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
     xmlns="sap.m"
->	
-    <Page id="page" title="View2" titleAlignment="Center">
+    xmlns:microchart="sap.suite.ui.microchart"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:layout="sap.ui.layout"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data"
+    >	
+    <Page id="page" title="Dashboard" titleAlignment="Center" navButtonPress="onBack" showNavButton="true">
         <content>
-            <Button text="Back" press="onBack"/>
+            <Toolbar >
+                <ToolbarSpacer />
+                <Select ></Select>
+                <Select></Select>
+            </Toolbar>
+            <HBox width="100%">
+                <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Total Centers for" subheader="Vaccination" press="press" frameType="Auto">
+                    <TileContent unit="{local>/TileData/city}" footer="{local>/TileData/state}">
+                        <NumericContent valueColor="Good" value="{local>/TileData/total_centers}" icon="sap-icon://accidental-leave" withMargin="false" />
+                    </TileContent>
+                </GenericTile>
+                <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop saUiLargeMarginBegin">
+                    <FlexBox width="20rem" height="10rem" alignContent="Center" justifyContent="SpaceBetween">
+                        <items>
+                            <microchart:InteractiveDonutChart selectionChanged="onSelectionChanged">
+                                <microchart:segments>
+                                    <microchart:InteractiveDonutChartSegment label="{local>/ChartData/0/vaccine}" value="{local>/ChartData/0/percentage}" displayedValue="{local>/ChartData/0/value}" color="Neutral"/>
+                                    <microchart:InteractiveDonutChartSegment label="{local>/ChartData/1/vaccine}" value="{local>/ChartData/1/percentage}" displayedValue="{local>/ChartData/1/value}" color="Neutral"/>
+                                    <microchart:InteractiveDonutChartSegment label="{local>/ChartData/2/vaccine}" value="{local>/ChartData/2/percentage}" displayedValue="{local>/ChartData/2/value}" color="Neutral"/>
+                                </microchart:segments>
+                            </microchart:InteractiveDonutChart>                    
+                        </items>
+                    </FlexBox>
+                    <FlexBox width="30rem" height="15rem" alignContent="Center" justifyContent="SpaceBetween">
+                        <items>
+                            <microchart:InteractiveBarChart labelWidth="25%" selectionChanged="onBarSelect">
+                                <microchart:bars>
+                                    <microchart:InteractiveBarChartBar label="Age 45+" value="{local>/ageChartData/age45}" color="Error"/>
+                                    <microchart:InteractiveBarChartBar label="Age 18+" value="{local>/ageChartData/age18}" color="Good"/>
+                                    <!-- <microchart:InteractiveBarChartBar label="Product 3" value="70"/> -->
+                                </microchart:bars>
+                            </microchart:InteractiveBarChart>
+                        </items>
+                    </FlexBox>
+                    
+                </HBox>
+            </HBox>
+            <Table id="centerDataTable"  items="{path: 'local>/center_data', sorter:{path: 'block_name'}}" alternateRowColors="true" inset="true">
+                <columns>
+                    <Column >
+                        <Label text="Center Name"/>
+                    </Column>
+                    <Column hAlign="Center">
+                        <Label text="Age Group"/>
+                    </Column>
+                    <Column >
+                        <Label text="Vaccine"/>
+                    </Column>
+                    <Column hAlign="Center">
+                        <Label text="Available Dose 1"/>
+                    </Column>
+                    <Column hAlign="Center">
+                        <Label text="Avaliable Dose 2"/>
+                    </Column>
+                    <Column >
+                        <Label text="Block"/>
+                    </Column>
+                    <Column >
+                        <Label text="Pincode"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{local>name}" />
+                            <Text text="{local>min_age_limit}+" />
+                            <Text text="{local>vaccine}" />
+                            <Text text="{local>available_capacity_dose1}"/>
+                            <Text text="{local>available_capacity_dose2}" />
+                            <Text text="{local>block_name}" />
+                            <Text text="{local>pincode}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>    
         </content>
     </Page>	
+
+    
 </mvc:View>
+
+
+<!-- viz Donut chart
+<viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}"
+        vizType='donut'>
+    <viz:dataset>
+        <viz.data:FlattenedDataset data="{local>/ChartData}">
+            <viz.data:dimensions>
+                <viz.data:DimensionDefinition name="Vaccine"
+                    value="{local>vaccine}" />
+            </viz.data:dimensions>
+            <viz.data:measures>
+                <viz.data:MeasureDefinition name="Percentage"
+                    value="{local>percentage}" />
+            </viz.data:measures>
+        </viz.data:FlattenedDataset>
+    </viz:dataset>
+
+    <viz:feeds>
+        <viz.feeds:FeedItem uid="size" type="Measure"
+            values="Percentage" />
+        <viz.feeds:FeedItem uid="color" type="Dimension"
+            values="Vaccine" />
+    </viz:feeds>
+</viz:VizFrame> -->
+
+<!-- viz Column Chart
+<viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}"
+    vizType='column' vizProperties="{title: {text: 'Vaccine Distibution acc. to Age'}}">
+    <viz:dataset>
+        <viz.data:FlattenedDataset data="{local>/center_data}">
+            <viz.data:dimensions>
+                <viz.data:DimensionDefinition name="Center" value="{local>address}" />
+            </viz.data:dimensions>
+            <viz.data:measures>
+                <viz.data:MeasureDefinition name="Min_age Limit" value="{local>min_age_limit}"/>
+            </viz.data:measures>
+        </viz.data:FlattenedDataset>
+    </viz:dataset>
+
+    <viz:feeds>
+        <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Min_age Limit" />
+        <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Center" />
+    </viz:feeds>
+</viz:VizFrame> -->

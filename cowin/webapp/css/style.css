@@ -1,1 +1,28 @@
 /* Enter your custom styles here */
+.sapMNCLargeFontSize {
+    color: aqua;
+}
+#container-cowin---idMain--icon1-icon-image {
+    background-color: steelblue;
+    border-radius: 50%;
+}
+#container-cowin---idMain--icon2-icon-image {
+    background-color: skyblue;
+    border-radius: 50%;
+}
+#container-cowin---idMain--icon3-icon-image {
+    background-color: paleturquoise;
+    border-radius: 50%;
+}
+#container-cowin---idMain--icon4-icon-image {
+    background-color: chocolate;
+    border-radius: 50%;
+}
+#container-cowin---idMain--icon5-icon-image {
+    background-color: lightpink;
+    border-radius: 50%;
+}
+#container-cowin---idMain--icon6-icon-image {
+    background-color: limegreen;
+    border-radius: 50%;
+}
