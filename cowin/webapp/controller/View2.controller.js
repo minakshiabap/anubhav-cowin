@@ -2,12 +2,15 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
-	"sap/m/MessageToast"
+	"sap/m/MessageToast",
+	"sap/ui/core/util/Export",
+	"sap/ui/core/util/ExportTypeCSV",
+	"sap/m/MessageBox"
 ],
 	/**
 	 * @param {typeof sap.ui.core.mvc.Controller} Controller
 	 */
-	function (Controller, Filter, FilterOperator, MessageToast) {
+	function (Controller, Filter, FilterOperator, MessageToast, Export, ExportTypeCSV, MessageBox) {
 		"use strict";
 
 		return Controller.extend("cowin.cowin.controller.View2", {
@@ -231,6 +234,81 @@ sap.ui.define([
 				var sDate = day + "-" + month + "-" + year;
 
 				this.getDataAccDistId(sKey, sDate);
+			},
+			onExcelExport: function(oEvent) {
+				debugger;
+				var sPath = oEvent.getSource().getParent().getParent().getBindingInfo("items").path;
+				var oModelData = this.getView().getModel("local").getProperty(sPath);
+				var oNewDataModel = [];
+				$.each(oModelData, function(Item, Value) {
+					var newModel = {
+						"name" : Value.name,
+						"min_age_limit":Value.min_age_limit,
+						"vaccine": Value.vaccine,
+						"available_capacity_dose1": Value.available_capacity_dose1,
+						"available_capacity_dose2": Value.available_capacity_dose2,
+						"block_name": Value.block_name,
+						"pincode": Value.pincode
+					}
+					oNewDataModel.push(newModel);
+				});
+				this.getView().getModel("local").setProperty("/ExcelData", oNewDataModel);
+
+				var oExport = new Export({
+					exportType : new ExportTypeCSV({
+						seperatorChar : ",",
+						charset: "utf-8"
+					}),
+
+					models : this.getView().getModel("local"),
+
+					rows : {
+						path : '/ExcelData'
+					},
+
+					columns : [{
+						name : "Center Name",
+						template : {
+							content : "{name}"
+						}
+					}, {
+						name : "Age Group",
+						template : {
+							content : "{min_age_limit}"
+						}
+					}, {
+						name : "Vaccine",
+						template : {
+							content : "{vaccine}"
+						}
+					}, {
+						name : "Available Dose 1",
+						template : {
+							content : "{available_capacity_dose1}"
+						}
+					}, {
+						name : "Available Dose 2",
+						template : {
+							content : "{available_capacity_dose2}"
+						}
+					}, {
+						name : "Block Name",
+						template : {
+							content : "{block_name}"
+						}
+					}, {
+						name : "Pincode",
+						template : {
+							content : "{pincode}"
+						}
+					}]
+				});
+
+				oExport.saveFile().catch(function(oError) {
+					MessageBox.error("Error when downloading data. Browser might not be supported!\n\n" + oError);
+				}).then(function() {
+					oExport.destroy();
+				});
 			}
 		});
 	});

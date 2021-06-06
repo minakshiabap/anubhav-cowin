@@ -39,6 +39,29 @@
 
 
 						<!-- <viz:Popover id="idPopOver"></viz:Popover> -->
+
+
+						<OverflowToolbar height="auto" asyncMode="true" design="Solid" class="sapUiSmallMarginTop">
+							<TileContent footer="Total Vaccination" class="sapUiLargeMarginEnd" footerColor="Good">
+								<NumericContent id="icon1" icon="https://cdn1.iconfinder.com/data/icons/modern-set-of-digital-symbols/48/configuration_dashboard-512.png" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/total_doses', formatter: '.getCountMillion'}" />
+							</TileContent>
+							<TileContent footer="Dose 1 Vaccination" class="sapUiLargeMarginEnd sapUiLargeMarginBegin" footerColor="Good">
+								<NumericContent id="icon2" icon="https://image.flaticon.com/icons/png/512/101/101960.png" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/tot_dose_1', formatter: '.getCountMillion'}" />
+							</TileContent>
+							<TileContent footer="Dose 2 Vaccination" class="sapUiLargeMarginEnd sapUiLargeMarginBegin" footerColor="Good">
+								<NumericContent id="icon3" icon="https://image.flaticon.com/icons/png/128/2966/2966456.png" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/tot_dose_2', formatter: '.getCountMillion'}" />
+							</TileContent>
+							<TileContent footer="Tot-Vaccinated Male" class="sapUiLargeMarginEnd sapUiLargeMarginBegin" footerColor="Good">
+								<NumericContent id="icon4" icon="https://image.flaticon.com/icons/png/512/0/126.png" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/male', formatter: '.getCountMillion'}" />
+							</TileContent>
+							<TileContent footer="Tot-Vaccinated Female" class="sapUiLargeMarginEnd sapUiLargeMarginBegin" footerColor="Good">
+								<NumericContent id="icon5" icon="https://icon-library.com/images/person-icon-png-transparent/person-icon-png-transparent-17.jpg" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/female', formatter: '.getCountMillion'}" />
+							</TileContent>
+							<TileContent footer="After Effect Reported" class="sapUiSmallMarginEnd" footerColor="Good">
+								<NumericContent id="icon6" icon="https://www.shareicon.net/data/2015/11/27/678427_people_512x512.png" scale="K+" value="{path: 'local>/allIndia/topBlock/vaccination/aefi', formatter: '.getCountThousand'}" />
+							</TileContent>
+						</OverflowToolbar>
+
 						<viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}" vizType='line' width="100%" vizProperties="{title: {text: 'Vaccination Trend'}}">
 							<viz:dataset>
 								<viz.data:FlattenedDataset data="{local>/timeWiseDataToday}">
@@ -59,27 +82,6 @@
 								<viz.feeds:FeedItem id='categoryAxisFeed' uid="categoryAxis" type="Dimension" values="Time" />
 							</viz:feeds>
 						</viz:VizFrame>
-						
-						<OverflowToolbar height="auto" asyncMode="true" design="Solid" class="sapUiSmallMarginTop">
-								<TileContent footer="Total Vaccination" class="sapUiLargeMarginEnd" footerColor="Good">
-									<NumericContent id="icon1" icon="https://cdn1.iconfinder.com/data/icons/modern-set-of-digital-symbols/48/configuration_dashboard-512.png" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/total_doses', formatter: '.getCountMillion'}" />
-								</TileContent>
-								<TileContent footer="Dose 1 Vaccination" class="sapUiLargeMarginEnd sapUiLargeMarginBegin" footerColor="Good">
-									<NumericContent id="icon2" icon="https://image.flaticon.com/icons/png/512/101/101960.png" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/tot_dose_1', formatter: '.getCountMillion'}" />
-								</TileContent>
-								<TileContent footer="Dose 2 Vaccination" class="sapUiLargeMarginEnd sapUiLargeMarginBegin" footerColor="Good">
-									<NumericContent id="icon3" icon="https://image.flaticon.com/icons/png/128/2966/2966456.png" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/tot_dose_2', formatter: '.getCountMillion'}" />
-								</TileContent>
-								<TileContent footer="Tot-Vaccinated Male" class="sapUiLargeMarginEnd sapUiLargeMarginBegin" footerColor="Good">
-									<NumericContent id="icon4" icon="https://image.flaticon.com/icons/png/512/0/126.png" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/male', formatter: '.getCountMillion'}" />
-								</TileContent>
-								<TileContent footer="Tot-Vaccinated Female" class="sapUiLargeMarginEnd sapUiLargeMarginBegin" footerColor="Good">
-									<NumericContent id="icon5" icon="https://icon-library.com/images/person-icon-png-transparent/person-icon-png-transparent-17.jpg" scale="M+" value="{path: 'local>/allIndia/topBlock/vaccination/female', formatter: '.getCountMillion'}" />
-								</TileContent>
-								<TileContent footer="After Effect Reported" class="sapUiSmallMarginEnd" footerColor="Good">
-									<NumericContent id="icon6" icon="https://www.shareicon.net/data/2015/11/27/678427_people_512x512.png" scale="K+" value="{path: 'local>/allIndia/topBlock/vaccination/aefi', formatter: '.getCountThousand'}" />
-								</TileContent>
-						</OverflowToolbar>
 					</VBox>
 				</content>
 			</Page>
@@ -87,8 +89,6 @@
 	</App>
 
 </mvc:View>
-
-
 
 <!-- <HBox width="100%">
 
