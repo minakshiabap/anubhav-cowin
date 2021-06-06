@@ -1,4 +1,4 @@
-<mvc:View
+<mvc:View xmlns:core="sap.ui.core"
     controllerName="cowin.cowin.controller.View2"
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
@@ -13,11 +13,19 @@
         <content>
             <Toolbar >
                 <ToolbarSpacer />
-                <Select ></Select>
-                <Select></Select>
+                <Select id="dashState" items="{local>/states}"  change="onDashStateChange" width="250px" forceSelection="false">
+                    <items>
+                        <core:ListItem text="{local>state_name}" key="{local>state_id}"/>
+                    </items>
+                </Select>
+                <Select id="dashCity" items="{local>/districts}" forceSelection="false" width="250px" change="onDashCityChange">
+                    <items>
+                        <core:ListItem text="{local>district_name}" key="{local>district_id}" />
+                    </items>
+                </Select>
             </Toolbar>
             <HBox width="100%">
-                <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Total Centers for" subheader="Vaccination" press="press" frameType="Auto">
+                <GenericTile class="sapUiLargeMarginBegin sapUiSmallMarginTop" header="Total Centers for" subheader="Vaccination" press="press" frameType="Auto">
                     <TileContent unit="{local>/TileData/city}" footer="{local>/TileData/state}">
                         <NumericContent valueColor="Good" value="{local>/TileData/total_centers}" icon="sap-icon://accidental-leave" withMargin="false" />
                     </TileContent>
@@ -25,7 +33,7 @@
                 <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop saUiLargeMarginBegin">
                     <FlexBox width="20rem" height="10rem" alignContent="Center" justifyContent="SpaceBetween">
                         <items>
-                            <microchart:InteractiveDonutChart selectionChanged="onSelectionChanged">
+                            <microchart:InteractiveDonutChart selectionChanged="onDonutSelect">
                                 <microchart:segments>
                                     <microchart:InteractiveDonutChartSegment label="{local>/ChartData/0/vaccine}" value="{local>/ChartData/0/percentage}" displayedValue="{local>/ChartData/0/value}" color="Neutral"/>
                                     <microchart:InteractiveDonutChartSegment label="{local>/ChartData/1/vaccine}" value="{local>/ChartData/1/percentage}" displayedValue="{local>/ChartData/1/value}" color="Neutral"/>
@@ -38,8 +46,8 @@
                         <items>
                             <microchart:InteractiveBarChart labelWidth="25%" selectionChanged="onBarSelect">
                                 <microchart:bars>
-                                    <microchart:InteractiveBarChartBar label="Age 45+" value="{local>/ageChartData/age45}" color="Error"/>
-                                    <microchart:InteractiveBarChartBar label="Age 18+" value="{local>/ageChartData/age18}" color="Good"/>
+                                    <microchart:InteractiveBarChartBar label="Age 45+" value="{local>/ageChartData/age45}" color="Neutral"/>
+                                    <microchart:InteractiveBarChartBar label="Age 18+" value="{local>/ageChartData/age18}" color="Neutral"/>
                                     <!-- <microchart:InteractiveBarChartBar label="Product 3" value="70"/> -->
                                 </microchart:bars>
                             </microchart:InteractiveBarChart>

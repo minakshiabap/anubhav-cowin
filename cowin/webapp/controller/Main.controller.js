@@ -35,9 +35,12 @@ function (Controller, JSONModel, MessageToast, formatter) {
 				success: function(data) {
 					debugger;
 					that.getOwnerComponent().getModel("local").setProperty("/allIndia", data);
+					that.getOwnerComponent().getModel("local").setProperty("/timeWiseDataToday", data.vaccinationDoneByTime);
+					
 				},
 				error: function(oErr) {
 					debugger;
+					MessageToast.show("Failed to Load Data");
 				}
 			});
 		},
@@ -88,6 +91,7 @@ function (Controller, JSONModel, MessageToast, formatter) {
 			var sDate = this.getView().byId("idSelectedDate").getValue();
 			if(this.getView().getModel("local").getProperty("/formData")) {
 				this.getView().getModel("local").setProperty("/formData", []);
+				this.getView().byId("dashboardBtn").setEnabled(false);
 			}
 			this.to_date = sDate;
 			if(sDate === "" || sDate === undefined || sDate === null) {
@@ -156,8 +160,6 @@ function (Controller, JSONModel, MessageToast, formatter) {
 						debugger;
 					}
 				});
-				// https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=512&date=31-03-2021
-				// https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=513&date=31-05-2021
 			}
 		},
 		state_Id: null,
@@ -172,6 +174,7 @@ function (Controller, JSONModel, MessageToast, formatter) {
 			this.getView().byId("stateSelect").setValueState("None");
 			var sKey = oEvent.getParameter("selectedItem").getKey();
 			this.state_Id = sKey;
+			sessionStorage.setItem("state_Id", sKey);
 			this.getView().byId("citySelect").setSelectedKey("");
 			$.ajax("https://cdn-api.co-vin.in/api/v2/admin/location/districts/"+ sKey, {
 				type: 'GET',
@@ -183,6 +186,7 @@ function (Controller, JSONModel, MessageToast, formatter) {
 					debugger;
 				}
 			});
+			// this.getPublicReport(sKey);
 		},
 		
 		onCitySelect: function(oEvent) {
@@ -190,6 +194,7 @@ function (Controller, JSONModel, MessageToast, formatter) {
 			this.getView().byId("dashboardBtn").setEnabled(false);
 			var sKey = oEvent.getParameter("selectedItem").getKey();
 			this.district_Id = sKey;
+			sessionStorage.setItem("district_Id", sKey);
 			this.getView().byId("citySelect").setValueState("None");
 			this.getView().byId("stateSelect").setValueState("None");
 		},

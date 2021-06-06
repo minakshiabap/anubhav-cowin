@@ -1,12 +1,13 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/Filter",
-	"sap/ui/model/FilterOperator"
+	"sap/ui/model/FilterOperator",
+	"sap/m/MessageToast"
 ],
 	/**
 	 * @param {typeof sap.ui.core.mvc.Controller} Controller
 	 */
-	function (Controller, Filter, FilterOperator) {
+	function (Controller, Filter, FilterOperator, MessageToast) {
 		"use strict";
 
 		return Controller.extend("cowin.cowin.controller.View2", {
@@ -17,53 +18,71 @@ sap.ui.define([
 			_onRouteMatched: function(oEvent) {
 				debugger;
 				var that = this;
-				if(!this.getOwnerComponent().getModel("local").getProperty("/center_data")){
+				var oModel = this.getOwnerComponent().getModel("local").getProperty("/center_data");
+				if(!oModel) {
 					var district_Id = oEvent.getParameter("arguments").distict_Id;
-					var sDate = oEvent.getParameter("arguments").date;
-					if(district_Id.length >= 6) {
-						$.ajax("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+district_Id+"&date="+sDate, {
-							type: 'GET',
-							success: function(data) {
-								debugger;
-								if(data.length === 0) {
-									MessageToast.show("No vaccination data available");
-								}else{
-									that.getOwnerComponent().getModel("local").setProperty("/center_data", data.sessions);
-								}
-								that.getDataForTile(data.sessions);
-								// that.getView().byId("dashboardBtn").setEnabled(true);
-							},
-							error: function(oErr) {
-								debugger;
-							}
-						});
+					var sDate = oEvent.getParameter("arguments").date;					
+					if(district_Id.length < 6) {
+						this.getDataAccDistId(district_Id, sDate);
 					}else {
-						$.ajax("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id="+district_Id+"&date="+sDate, {
-							type: 'GET',
-							success: function(data) {
-								debugger;
-								if(data.length === 0) {
-									MessageToast.show("No vaccination data available");
-								}else{
-									that.getOwnerComponent().getModel("local").setProperty("/center_data", data.sessions);
-								}
-								that.getDataForTile(data.sessions);
-								that.getChartData(data.sessions);
-								// that.getView().byId("dashboardBtn").setEnabled(true);
-								
-							},
-							error: function(oErr) {
-								debugger;
-							}
-						});
+						
+						this.getDataAccPincode(district_Id, sDate);
 					}
+					this.getStateList();
 				}else{
-					var oCenterData = this.getView().getModel("local").getProperty("/center_data");
-					this.getDataForTile(oCenterData);
-					this.getChartData(oCenterData);
+					this.getDataForTile(oModel);
+					this.getChartData(oModel);
 				}
-				
-
+				this.getView().getModel("local").setProperty("/districts", []);
+			},
+			getDataAccPincode: function(district_Id, sDate) {
+				var that = this;
+				$.ajax("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+district_Id+"&date="+sDate, {
+					type: 'GET',
+					success: function(data) {
+						debugger;
+						if(data.sessions.length === 0) {
+							MessageToast.show("No vaccination data available for selected area");
+						}else{
+							that.getOwnerComponent().getModel("local").setProperty("/center_data", data.sessions);
+						}
+						that.getDataForTile(data.sessions);
+						that.getChartData(data.sessions);
+					},
+					error: function(oErr) {
+						debugger;
+					}
+				});
+			},
+			getDataAccDistId: function(district_Id, sDate) {
+				var that = this;
+				$.ajax("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id="+district_Id+"&date="+sDate, {
+					type: 'GET',
+					success: function(data) {
+						debugger;
+						if(data.sessions.length === 0) {
+							MessageToast.show("No vaccination data available for selected area");
+						}else{
+							that.getOwnerComponent().getModel("local").setProperty("/center_data", data.sessions);
+						}
+						that.getDataForTile(data.sessions);
+						that.getChartData(data.sessions);								
+					},
+					error: function(oErr) {
+						debugger;
+					}
+				});
+			},
+			getStateList: function() {
+				var that = this;
+				$.ajax("https://cdn-api.co-vin.in/api/v2/admin/location/states", {
+					type: 'GET',
+					success: function(data) {
+						that.getOwnerComponent().getModel("local").setProperty("/states", data.states);
+					},
+					error: function(oErr) {
+					}
+				});
 			},
 			onBack: function() {debugger;
 				this.oRouter.navTo("Main");
@@ -108,7 +127,7 @@ sap.ui.define([
 						"percentage": parseFloat(((covaxin/Total)*100).toFixed(2))
 					},
 					{
-						"vaccine": "Spuntnik V",
+						"vaccine": "Sputnik V",
 						"value": sputnik,
 						"percentage": parseFloat(((sputnik/Total)*100).toFixed(2))
 					}];
@@ -153,6 +172,65 @@ sap.ui.define([
 					var oFilter  = [];
 				}
 				oTable.getBinding("items").filter(oFilter);
+			},
+			onDonutSelect: function(oEvent) {debugger;
+				var selectedSegments = oEvent.getParameter("selectedSegments");
+				var selectedLabel = oEvent.getParameter("segment").getProperty("label");
+				var selectedId = oEvent.getParameter("segment").getId();
+				var selected = oEvent.getParameter("selected");
+				$.each(selectedSegments, function(Item, Value){
+					if(Value.sId !== selectedId){
+						selectedSegments[Item].setSelected(false);
+					}
+				});
+				var oTable = this.getView().byId("centerDataTable");
+				if(selectedLabel.includes("Covishield") && selected) {
+					 var oFilter  = new Filter("vaccine", FilterOperator.Contains, selectedLabel);
+				}else if(selectedLabel.includes("Covishield") && !selected) {
+					var oFilter = [];
+				}else if(selectedLabel.includes("Covaxin") && selected) {
+					var oFilter  = new Filter("vaccine", FilterOperator.Contains, selectedLabel);
+				}else if(selectedLabel.includes("Covaxin") && !selected) {
+					var oFilter = [];
+				}else if(selectedLabel.includes("Sputnik") && selected) {
+					var oFilter  = new Filter("vaccine", FilterOperator.Contains, "SPUTNIK");
+				}else {
+					var oFilter  = [];
+				}
+				oTable.getBinding("items").filter(oFilter);
+			},
+			onDashStateChange: function(oEvent) {
+				var that = this;
+				this.getView().byId("dashCity").setSelectedKey("");
+				var sKey = oEvent.getParameter("selectedItem").getKey();
+				this.state_Id = sKey;
+				$.ajax("https://cdn-api.co-vin.in/api/v2/admin/location/districts/"+ sKey, {
+					type: 'GET',
+					success: function(data) {
+						debugger;
+						that.getOwnerComponent().getModel("local").setProperty("/districts", data.districts);
+					},
+					error: function(oErr) {
+						debugger;
+					}
+				});
+			},
+			onDashCityChange: function(oEvent) {
+				var sKey = oEvent.getParameter("selectedItem").getKey();
+				
+				var Date1 = new Date();
+				var day = Date1.getDate();
+				if (day < 10) {
+					day = "0" + day;
+				}
+				var month = Date1.getMonth() + 1;
+				if (month < 10) {
+					month = "0" + month;
+				}
+				var year = Date1.getFullYear();
+				var sDate = day + "-" + month + "-" + year;
+
+				this.getDataAccDistId(sKey, sDate);
 			}
 		});
 	});

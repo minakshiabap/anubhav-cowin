@@ -84,7 +84,7 @@
         },
         {
           "name": "View2",
-          "pattern": "View2/{distict_Id}&{date}",
+          "pattern": "View2/district_id={distict_Id}&date={date}",
           "target": ["View2"]
         }
       ],
