@@ -3,6 +3,11 @@
 	<App id="app" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:vbm="sap.ui.vbm">
 		<pages>
 			<Page id="page" title="{i18n>title}" titleAlignment="Center">
+				<headerContent>
+					<Toolbar>
+						<Image src="https://static.wixstatic.com/media/74c3a1_d23c9389ba744c62b9883118b5b8eb74~mv2.png/v1/fill/w_124,h_124,al_c,q_85,usm_0.66_1.00_0.01/atsv1.webp" width="50px" height="50px"/>
+					</Toolbar>
+				</headerContent>
 				<content>
 					<VBox>
 						<HBox justifyContent="Center" alignContent="Center" class="sapUiSmallMarginTop">
