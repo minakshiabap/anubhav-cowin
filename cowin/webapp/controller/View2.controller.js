@@ -19,7 +19,7 @@ sap.ui.define([
 				this.oRouter.getRoute("View2").attachMatched(this._onRouteMatched, this);
 			},
 			_onRouteMatched: function(oEvent) {
-				debugger;
+				
 				var that = this;
 				var oModel = this.getOwnerComponent().getModel("local").getProperty("/center_data");
 				if(!oModel) {
@@ -43,7 +43,7 @@ sap.ui.define([
 				$.ajax("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+district_Id+"&date="+sDate, {
 					type: 'GET',
 					success: function(data) {
-						debugger;
+						
 						if(data.sessions.length === 0) {
 							MessageToast.show("No vaccination data available for selected area");
 						}else{
@@ -53,7 +53,7 @@ sap.ui.define([
 						that.getChartData(data.sessions);
 					},
 					error: function(oErr) {
-						debugger;
+						
 					}
 				});
 			},
@@ -62,7 +62,7 @@ sap.ui.define([
 				$.ajax("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id="+district_Id+"&date="+sDate, {
 					type: 'GET',
 					success: function(data) {
-						debugger;
+						
 						if(data.sessions.length === 0) {
 							MessageToast.show("No vaccination data available for selected area");
 						}else{
@@ -72,7 +72,7 @@ sap.ui.define([
 						that.getChartData(data.sessions);								
 					},
 					error: function(oErr) {
-						debugger;
+						
 					}
 				});
 			},
@@ -87,10 +87,10 @@ sap.ui.define([
 					}
 				});
 			},
-			onBack: function() {debugger;
+			onBack: function() {
 				this.oRouter.navTo("Main");
 			},
-			getDataForTile: function(sessionData) {debugger;
+			getDataForTile: function(sessionData) {
 				var total_center = sessionData.length;
 				var city_name = sessionData[0].district_name;
 				var state_name = sessionData[0].state_name;
@@ -153,7 +153,7 @@ sap.ui.define([
 				this.getView().getModel("local").setProperty("/ageChartData", oAgeData);
 			},
 			onBarSelect: function(oEvent) {
-				debugger;
+				
 				var selectedBars = oEvent.getParameter("selectedBars");
 				var selectedLabel = oEvent.getParameter("bar").getProperty("label");
 				var selectedId = oEvent.getParameter("bar").getId();
@@ -176,7 +176,7 @@ sap.ui.define([
 				}
 				oTable.getBinding("items").filter(oFilter);
 			},
-			onDonutSelect: function(oEvent) {debugger;
+			onDonutSelect: function(oEvent) {
 				var selectedSegments = oEvent.getParameter("selectedSegments");
 				var selectedLabel = oEvent.getParameter("segment").getProperty("label");
 				var selectedId = oEvent.getParameter("segment").getId();
@@ -210,11 +210,11 @@ sap.ui.define([
 				$.ajax("https://cdn-api.co-vin.in/api/v2/admin/location/districts/"+ sKey, {
 					type: 'GET',
 					success: function(data) {
-						debugger;
+						
 						that.getOwnerComponent().getModel("local").setProperty("/districts", data.districts);
 					},
 					error: function(oErr) {
-						debugger;
+						
 					}
 				});
 			},
@@ -236,7 +236,7 @@ sap.ui.define([
 				this.getDataAccDistId(sKey, sDate);
 			},
 			onExcelExport: function(oEvent) {
-				debugger;
+				
 				var sPath = oEvent.getSource().getParent().getParent().getBindingInfo("items").path;
 				var oModelData = this.getView().getModel("local").getProperty(sPath);
 				var oNewDataModel = [];

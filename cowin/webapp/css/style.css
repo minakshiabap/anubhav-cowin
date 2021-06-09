@@ -26,3 +26,85 @@
     background-color: limegreen;
     border-radius: 50%;
 }
+
+
+
+html.sap-phone *, html.sap-tablet:not(.sap-desktop) * {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    
+    flex-wrap: wrap;
+    place-content: center;
+}
+
+
+/* .sapMTB-Transparent-CTX>.sapMTitleTB.sapMTitleStyleAuto {
+    font-size: 1.125rem;
+    margin-bottom: -3rem;
+} */
+
+
+/* #idButton{
+    margin-left: -3rem;
+} */
+
+
+/* #container-cowin---idView2--idText-inner{
+    margin-top: 0rem;
+    margin-left: 3px;
+
+}
+
+.sapMTitle{
+    margin-top: -3rem;
+}
+
+ #__data24{
+    margin-left: 6rem;
+} */
+
+
+/* /* 
+#container-cowin---idView2--dashState{
+    width: 155px;
+    margin-left: 5rem;
+    margin-top: 0;
+}
+
+#container-cowin---idView2--dashCity{
+    width: 155px;
+    margin-left: 3rem;
+} */
+
+/* #__text6{
+    margin-left:3rem;
+
+}
+
+#__text4{
+margin-left:5rem
+}
+
+#__toolbar4{
+    margin-left: -7rem;
+}  */
+
+
+#container-cowin---idView2--idButton{
+    margin-left: -3rem;
+}
+
+
+#__chart1-bar-positive-1{
+    background-color: burlywood;
+}
+
+/* #__title5{
+    margin-top: -50px;
+}
+
+#__title0{
+    margin-top: -39px;
+} */
+
+

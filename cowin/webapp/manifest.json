@@ -1,6 +1,7 @@
 {
-  "_version": "1.32.0",
+  "_version": "1.6.0",
   "sap.app": {
+    "_version": "1.3.0",
     "id": "cowin.cowin",
     "type": "application",
     "i18n": "i18n/i18n.properties",
@@ -13,6 +14,7 @@
     "ach": "ach"
   },
   "sap.ui": {
+    "_version": "1.3.0",
     "technology": "UI5",
     "icons": {
       "icon": "sap-icon://task",
@@ -30,18 +32,24 @@
   },
 
   "sap.ui5": {
-    "flexEnabled": false,
+    "_version": "1.2.0",
     "rootView": {
       "viewName": "cowin.cowin.view.Main",
       "type": "XML",
       "id": "Main"
     },
     "dependencies": {
-      "minUI5Version": "1.66.0",
+      "minUI5Version": "1.44",
       "libs": {
-        "sap.ui.core": {},
-        "sap.m": {},
-        "sap.ui.layout": {}
+        "sap.ui.core": {
+          "minVersion": "1.44"
+        },
+        "sap.m": {
+          "minVersion": "1.44"
+        },
+        "sap.ui.layout": {
+          "minVersion": "1.44"
+        }
       }
     },
     "contentDensities": {

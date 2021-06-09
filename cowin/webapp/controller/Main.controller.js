@@ -19,11 +19,11 @@ function (Controller, JSONModel, MessageToast, formatter) {
 			$.ajax("https://cdn-api.co-vin.in/api/v2/admin/location/states", {
 				type: 'GET',
 				success: function(data) {
-					// debugger;
+					// 
 					that.getOwnerComponent().getModel("local").setProperty("/states", data.states);
 				},
 				error: function(oErr) {
-					// debugger;
+					// 
 				}
 			});
 			this.getAllIndiaCovidData();
@@ -33,13 +33,13 @@ function (Controller, JSONModel, MessageToast, formatter) {
 			$.ajax("https://api.cowin.gov.in/api/v1/reports/v2/getPublicReports?state_id=&district_id=", {
 				type: 'GET',
 				success: function(data) {
-					debugger;
+					
 					that.getOwnerComponent().getModel("local").setProperty("/allIndia", data);
 					that.getOwnerComponent().getModel("local").setProperty("/timeWiseDataToday", data.vaccinationDoneByTime);
 					
 				},
 				error: function(oErr) {
-					debugger;
+					
 					MessageToast.show("Failed to Load Data");
 				}
 			});
@@ -75,11 +75,11 @@ function (Controller, JSONModel, MessageToast, formatter) {
 		onRadioBtnSelect: function(oEvent) {
 			var sIndex = oEvent.getParameter("selectedIndex");
 			if (sIndex){
-				debugger;
+				
 				this.getView().byId("pinBox").setVisible(false);
 				this.getView().byId("cityBox").setVisible(true);
 			}else {
-				debugger;
+				
 				this.getView().byId("pinBox").setVisible(true);
 				this.getView().byId("cityBox").setVisible(false);
 			}
@@ -108,7 +108,7 @@ function (Controller, JSONModel, MessageToast, formatter) {
 				sDate = day + "-" + month + "-" + year;
 			}
 			if(sId.includes("cityButton")) {
-				debugger;
+				
 				var oSelectedState = this.getView().byId("stateSelect").getSelectedItem();
 				var oSelecetdCity = this.getView().byId("citySelect").getSelectedItem();
 				if(!oSelecetdCity || !oSelectedState){
@@ -122,7 +122,7 @@ function (Controller, JSONModel, MessageToast, formatter) {
 				$.ajax("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id="+this.district_Id+"&date="+sDate, {
 					type: 'GET',
 					success: function(data) {
-						debugger;
+						
 						if(data.sessions.length === 0) {
 							MessageToast.show("No vaccination data available");
 							return;
@@ -134,19 +134,19 @@ function (Controller, JSONModel, MessageToast, formatter) {
 						
 					},
 					error: function(oErr) {
-						debugger;
+						
 					}
 				});
 				// https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=110001&date=31-03-2021
 				// https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=332001&date=29-05-2021
 			}else {
-				debugger;
+				
 				var sPin = this.getView().byId("pinCode").getValue();
 				this.pinCode_Id = sPin;
 				$.ajax("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+sPin+"&date="+sDate, {
 					type: 'GET',
 					success: function(data) {
-						debugger;
+						
 						if(data.sessions.length === 0) {
 							MessageToast.show("No vaccination data available");
 							return;
@@ -157,7 +157,7 @@ function (Controller, JSONModel, MessageToast, formatter) {
 						that.getView().byId("dashboardBtn").setEnabled(true);
 					},
 					error: function(oErr) {
-						debugger;
+						
 					}
 				});
 			}
@@ -166,7 +166,7 @@ function (Controller, JSONModel, MessageToast, formatter) {
 		district_Id: null,
 		pinCode_Id: null,
 		onStateSelect: function(oEvent) {
-			debugger;
+			
 			var that = this;
 			this.pinCode_Id = null;
 			this.getView().byId("dashboardBtn").setEnabled(false);
@@ -179,18 +179,18 @@ function (Controller, JSONModel, MessageToast, formatter) {
 			$.ajax("https://cdn-api.co-vin.in/api/v2/admin/location/districts/"+ sKey, {
 				type: 'GET',
 				success: function(data) {
-					debugger;
+					
 					that.getOwnerComponent().getModel("local").setProperty("/districts", data.districts);
 				},
 				error: function(oErr) {
-					debugger;
+					
 				}
 			});
 			// this.getPublicReport(sKey);
 		},
 		
 		onCitySelect: function(oEvent) {
-			debugger;
+			
 			this.getView().byId("dashboardBtn").setEnabled(false);
 			var sKey = oEvent.getParameter("selectedItem").getKey();
 			this.district_Id = sKey;
