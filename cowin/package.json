@@ -30,5 +30,9 @@
 		"dependencies": [
 			"@sap/ux-ui5-tooling"
 		]
+	},
+	"dependencies": {
+		"express": "^4.17.1",
+		"pm2": "^5.1.0"
 	}
 }
