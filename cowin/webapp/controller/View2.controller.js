@@ -152,7 +152,9 @@ sap.ui.define([
 				}
 				this.getView().getModel("local").setProperty("/ageChartData", oAgeData);
 			},
-			onBarSelect: function(oEvent) {
+			vaccFilter : null,
+			ageFilter : null,
+			onBarSelect: function(oEvent) {debugger;
 				
 				var selectedBars = oEvent.getParameter("selectedBars");
 				var selectedLabel = oEvent.getParameter("bar").getProperty("label");
@@ -167,16 +169,32 @@ sap.ui.define([
 				if(selectedLabel.includes("18") && selected) {
 					 var oFilter  = new Filter("min_age_limit", FilterOperator.EQ, 18);
 				}else if(selectedLabel.includes("18") && !selected) {
-					var oFilter = [];
+					var oFilter = null;
 				}else if(selectedLabel.includes("45") && selected) {
 					var oFilter  = new Filter("min_age_limit", FilterOperator.EQ, 45);
 				}
 				else {
-					var oFilter  = [];
+					var oFilter  = null;
 				}
-				oTable.getBinding("items").filter(oFilter);
+				this.ageFilter = oFilter
+				if(!this.vaccFilter && !this.ageFilter) {
+					var aFilter = [];
+				}
+				else if(!this.vaccFilter && this.ageFilter) {
+					aFilter = this.ageFilter;
+				}
+				else if(this.vaccFilter && !this.ageFilter) {
+					aFilter = this.vaccFilter;
+				}
+				else if(this.vaccFilter && this.ageFilter) {
+					aFilter = new Filter({
+						filters: [this.vaccFilter, this.ageFilter],
+						and: true
+					});
+				}
+				oTable.getBinding("items").filter(aFilter);
 			},
-			onDonutSelect: function(oEvent) {
+			onDonutSelect: function(oEvent) {debugger;
 				var selectedSegments = oEvent.getParameter("selectedSegments");
 				var selectedLabel = oEvent.getParameter("segment").getProperty("label");
 				var selectedId = oEvent.getParameter("segment").getId();
@@ -190,17 +208,33 @@ sap.ui.define([
 				if(selectedLabel.includes("Covishield") && selected) {
 					 var oFilter  = new Filter("vaccine", FilterOperator.Contains, selectedLabel);
 				}else if(selectedLabel.includes("Covishield") && !selected) {
-					var oFilter = [];
+					var oFilter = null;
 				}else if(selectedLabel.includes("Covaxin") && selected) {
 					var oFilter  = new Filter("vaccine", FilterOperator.Contains, selectedLabel);
 				}else if(selectedLabel.includes("Covaxin") && !selected) {
-					var oFilter = [];
+					var oFilter = null;
 				}else if(selectedLabel.includes("Sputnik") && selected) {
 					var oFilter  = new Filter("vaccine", FilterOperator.Contains, "SPUTNIK");
 				}else {
-					var oFilter  = [];
+					var oFilter  = null;
 				}
-				oTable.getBinding("items").filter(oFilter);
+				this.vaccFilter = oFilter;
+				if(!this.vaccFilter && !this.ageFilter) {
+					var aFilter = [];
+				}
+				else if(!this.vaccFilter && this.ageFilter) {
+					aFilter = this.ageFilter;
+				}
+				else if(this.vaccFilter && !this.ageFilter) {
+					aFilter = this.vaccFilter;
+				}
+				else if(this.vaccFilter && this.ageFilter) {
+					aFilter = new Filter({
+						filters: [this.vaccFilter, this.ageFilter],
+						and: true
+					});
+				}
+				oTable.getBinding("items").filter(aFilter);
 			},
 			onDashStateChange: function(oEvent) {
 				var that = this;
@@ -235,20 +269,20 @@ sap.ui.define([
 
 				this.getDataAccDistId(sKey, sDate);
 			},
-			onExcelExport: function(oEvent) {
+			onExcelExport: function(oEvent) {debugger;
 				
-				var sPath = oEvent.getSource().getParent().getParent().getBindingInfo("items").path;
-				var oModelData = this.getView().getModel("local").getProperty(sPath);
+				var oContexts = this.getView().byId("centerDataTable").getBinding("items").getCurrentContexts();
 				var oNewDataModel = [];
-				$.each(oModelData, function(Item, Value) {
+				$.each(oContexts, function(Item, Value) {
+					var oValue = Value.getObject();
 					var newModel = {
-						"name" : Value.name,
-						"min_age_limit":Value.min_age_limit,
-						"vaccine": Value.vaccine,
-						"available_capacity_dose1": Value.available_capacity_dose1,
-						"available_capacity_dose2": Value.available_capacity_dose2,
-						"block_name": Value.block_name,
-						"pincode": Value.pincode
+						"name" : oValue.name,
+						"min_age_limit":oValue.min_age_limit,
+						"vaccine": oValue.vaccine,
+						"available_capacity_dose1": oValue.available_capacity_dose1,
+						"available_capacity_dose2": oValue.available_capacity_dose2,
+						"block_name": oValue.block_name,
+						"pincode": oValue.pincode
 					}
 					oNewDataModel.push(newModel);
 				});
