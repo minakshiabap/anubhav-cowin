@@ -154,7 +154,7 @@ sap.ui.define([
 			},
 			vaccFilter : null,
 			ageFilter : null,
-			onBarSelect: function(oEvent) {debugger;
+			onBarSelect: function(oEvent) {
 				
 				var selectedBars = oEvent.getParameter("selectedBars");
 				var selectedLabel = oEvent.getParameter("bar").getProperty("label");
@@ -194,7 +194,7 @@ sap.ui.define([
 				}
 				oTable.getBinding("items").filter(aFilter);
 			},
-			onDonutSelect: function(oEvent) {debugger;
+			onDonutSelect: function(oEvent) {
 				var selectedSegments = oEvent.getParameter("selectedSegments");
 				var selectedLabel = oEvent.getParameter("segment").getProperty("label");
 				var selectedId = oEvent.getParameter("segment").getId();
@@ -269,7 +269,7 @@ sap.ui.define([
 
 				this.getDataAccDistId(sKey, sDate);
 			},
-			onExcelExport: function(oEvent) {debugger;
+			onExcelExport: function(oEvent) {
 				
 				var oContexts = this.getView().byId("centerDataTable").getBinding("items").getCurrentContexts();
 				var oNewDataModel = [];
